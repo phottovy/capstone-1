@@ -55,7 +55,6 @@ Eventually I decided the topic **"Bob Dylan/Not Bob Dylan"** with the goal of bu
 | F1-Score | 73.6% |
 
 ### Confusion Matrix
-| ----------- | ----------- |
 | 92 | 107 |
 | ----------- | ----------- |
 | 14 | 168 |
