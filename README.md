@@ -23,25 +23,41 @@ Eventually I decided the topic **"Bob Dylan/Not Bob Dylan"** with the goal of bu
 
 ### Process
 1. Clean the data
+* Demonstration Data
+![demo_data](images/demo_data.png)
 
 2. Tokenize all words using bag of words method:
 * Demo Data:
 ![demo_bow](images/demo_bow.png)
 
 * Actual Data:
-![bow_count](bow_count.png)
+![bow_count](images/bow_count.png)
 
 3. Add weights to each word using the TF-IDF method:
 * Demo Data:
 ![demo_bow](images/demo_tfidf.png)
 
 * Actual Data:
-![bow_count](tfidf_weight.png)
+![tfidf_weight](images/tfidf_weight.png)
 
 4. Test the data using the Naive Bayes method:
 
 **Given the song is Bob Dylan, what is the probability that we see that specific word?**
 
+
+## Results
+
+| Stat | Score |
+| ----------- | ----------- |
+| Accuracy | 69.2% |
+| Precision | 61.0% |
+| Recall | 92.3% |
+| F1-Score | 73.6% |
+
+### Confusion Matrix
+| 92 | 107 |
+| ----------- | ----------- |
+| 14 | 168 |
 
 <!-- ## Getting Started
 
