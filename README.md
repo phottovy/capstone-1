@@ -21,12 +21,29 @@ After deciding to use song lyrics for my capstone, I had to pivot and decide on 
 
 Eventually I decided the topic **"Bob Dylan/Not Bob Dylan"** with the goal of building a classifcation model to predict if a song was written in fact written by Bob Dylan.
 
+### Process
+1. Clean the data
+
+2. Tokenize all words using bag of words method:
+* Demo Data:
+![demo_bow](images/demo_bow.png)
+
+* Actual Data:
+![bow_count](bow_count.png)
+
+3. Add weights to each word using the TF-IDF method:
+* Demo Data:
+![demo_bow](images/demo_tfidf.png)
+
+* Actual Data:
+![bow_count](tfidf_weight.png)
+
+4. Test the data using the Naive Bayes method:
+
+**Given the song is Bob Dylan, what is the probability that we see that specific word?**
 
 
-**Given the song is BD, what is the probability that we see that specific word?**
-
-
-## Getting Started
+<!-- ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
@@ -162,4 +179,4 @@ Project Organization
 
 --------
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p> -->

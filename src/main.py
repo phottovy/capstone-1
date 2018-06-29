@@ -210,6 +210,9 @@ def main():
     lyrics_pipeline.fit(X_train, y_train)
     y_predictions = make_predictions(lyrics_pipeline, X_test)
     print_classification_information(y_test, y_predictions)
+    print(bag_of_words_counts(sample_dataset))
+    sample_bow_vector(sample_dataset)
+    # confusion_matrix(y_test, y_predict)
 
 
 
