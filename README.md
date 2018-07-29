@@ -37,7 +37,7 @@ For demonstration purposes, I made a two song dataset to show what the data look
 | Rick Astley | We're no strangers to love\r\n\You know the rul... | Never Gonna Give You Up | False |
 
 ### 2. Clean the data:
-The next step is to clean the strings in the dataset. There are different options for cleaning the data depending on your testing purposes. For my dataset, I initially cleaned the following items out of the dataset:
+The next step is to clean the strings in the dataset. The lyrics of each song are called a document, and the collection of documents is called a corpus. There are different options for cleaning the data depending on your testing purposes. For my dataset, I initially cleaned the following items out of the dataset:
  * Remove Punctuation
  * Remove Stopwords (my default list was sklearn's built in list of stopwords)
 
@@ -49,7 +49,7 @@ The next step is to clean the strings in the dataset. There are different option
 | Rick Astley | strangers love know rules full commitments thi... | Never Gonna Give You Up | False |
 
 ### 3. Tokenize all words using bag of words method:
-Next, you need take all of the remaining words in the dataset, also called the corpus, and convert them into a matrix. The matrix consists of one row for every song in the data set and one column for each word in the corpus.
+Next, you need take all of the remaining words in the corpus and convert them into a bag of words matrix. The matrix consists of one row for every song in the data set and one column for each word in the corpus.
 
 ##### Demo Dataset after tokenization:
 
@@ -88,8 +88,38 @@ Next, you need take all of the remaining words in the dataset, also called the c
 |  9 | gonna  |     745 |
 | 10 | say    |     738 |
 
-### 4. Add weights to each word using the TF-IDF method:
 
+Out of curiosity, I decided to see which word were more common in Bob Dylan songs than in the rest of the songs in the sample dataset. (minimum of 200 in bd_count) 
+
+##### Top twenty words more common in Bob Dylan songs:
+
+| word   |   bd_count |   other_count |   total_count |     bd_% |
+|:-------|-----------:|--------------:|--------------:|---------:|
+| gone   |        241 |            81 |           322 | 74.84% |
+| lord   |        208 |            71 |           279 | 74.55% |
+| said   |        402 |           154 |           556 | 72.30% |
+| aint   |        423 |           216 |           639 | 66.20% |
+| long   |        242 |           147 |           389 | 62.21% |
+| man    |        399 |           248 |           647 | 61.67% |
+| eyes   |        208 |           133 |           341 | 60.99% |
+| tell   |        328 |           212 |           540 | 60.74% |
+| gonna  |        447 |           298 |           745 | 60.00% |
+| come   |        549 |           368 |           917 | 59.87% |
+| away   |        266 |           180 |           446 | 59.64% |
+| got    |        701 |           479 |          1180 | 59.41% |
+| night  |        313 |           237 |           550 | 56.90% |
+| time   |        469 |           383 |           852 | 55.05% |
+| say    |        393 |           345 |           738 | 53.25% |
+| want   |        329 |           297 |           626 | 52.56% |
+| like   |        741 |           694 |          1435 | 51.64% |
+| know   |        712 |           678 |          1390 | 51.22% |
+| day    |        304 |           290 |           594 | 51.18% |
+| heart  |        255 |           251 |           506 | 50.40% |
+
+
+
+### 4. Add weights to each word using the TF-IDF method:
+While having a matrix with count of each word is helpful, it does not provide any meaningful distinction between the different documents. The goal of classification is to build a model that can identify unique qualities of one writer's song lyrics from other songs. Now we will tranform the word counts to a Term Frequency-Inverse Document Frequency (TF-IDF) matrix. The method identifies the importance of a single word within its document by taking the count of that word and dividing it by the total number of words in the document. This gives you the TF of the IDF. To calculate the IDF, you reduce the TF by comparing it to how often that same word appears in the rest of the corpus. For example, if a word appears in one document but does not appear in any other document, than it will have a high weight. Conversely, if a word appears often in many documents in the corpus, that word loses some of its weight in differentiating one document from another. Remember, the goal is to find characteristics of one song writer and if a word is common to many song writers, it does not help our model make its predictions.
 
 ###### Demo dataset after TF-IDF  
 ||BD/NotBD|gonna|never|babe|give|want|
@@ -111,6 +141,8 @@ Next, you need take all of the remaining words in the dataset, also called the c
 |  9 | say     | 0.1037  |
 | 10 | go      | 0.0977 |
 
+As you can see in the demo dataset, several words are very important in distinguishing the two songs from each other.
+
 ###### Top ten weights in the actual test dataset:
 
 |    | word   |    weight |
@@ -125,6 +157,31 @@ Next, you need take all of the remaining words in the dataset, also called the c
 |  8 | time   | 0.022% |
 |  9 | let    | 0.019% |
 | 10 | say    | 0.019% |
+
+
+
+| word   |   bd_count |   other_count |   total_count |     bd_% |
+|:-------|-----------:|--------------:|--------------:|---------:|
+| gone   |        241 |            81 |           322 | 74.84% |
+| lord   |        208 |            71 |           279 | 74.55% |
+| said   |        402 |           154 |           556 | 72.30% |
+| aint   |        423 |           216 |           639 | 66.20% |
+| long   |        242 |           147 |           389 | 62.21% |
+| man    |        399 |           248 |           647 | 61.67% |
+| eyes   |        208 |           133 |           341 | 60.99% |
+| tell   |        328 |           212 |           540 | 60.74% |
+| gonna  |        447 |           298 |           745 | 60.00% |
+| come   |        549 |           368 |           917 | 59.87% |
+| away   |        266 |           180 |           446 | 59.64% |
+| got    |        701 |           479 |          1180 | 59.41% |
+| night  |        313 |           237 |           550 | 56.90% |
+| time   |        469 |           383 |           852 | 55.05% |
+| say    |        393 |           345 |           738 | 53.25% |
+| want   |        329 |           297 |           626 | 52.56% |
+| like   |        741 |           694 |          1435 | 51.64% |
+| know   |        712 |           678 |          1390 | 51.22% |
+| day    |        304 |           290 |           594 | 51.18% |
+| heart  |        255 |           251 |           506 | 50.40% |
 
 ### 5. Test the data using the Naive Bayes method:
 
