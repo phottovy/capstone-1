@@ -8,191 +8,166 @@ Even though our course has not covered Natural Language Processing, I was allowe
 
 ### ~~Hot Dog/Not Hot Dog~~ Bob Dylan/ Not Bob Dylan
 
-After deciding to use song lyrics for my capstone, I had to pivot and decide on a topic that used concepts we have learned about in class along with teaching myself some NLP techniques. After some contemplating, I remembered Bob Dylan is famous for not only writing his own music, but also writing many very famous songs that were made famous by other artists. Below is sample list of those songs. I knew he had written many songs but after some research, the total number of songs he is credited with writing is somewhere between 350 and 650 songs!!!. The Kaggle dataset has him listed as the artist for over 600 unique songs which gives me a  Below is sample list of those songs:
+After deciding to use song lyrics for my capstone, I had to pivot and decide on a topic that used concepts we have learned about in class along with teaching myself some NLP techniques. After some contemplating, I remembered Bob Dylan is famous for not only writing his own music, but also writing many very famous songs that were made famous by other artists. Below is sample list of those songs. I knew he had written many songs but after some research, the total number of songs he is credited with writing is somewhere between 350 and 650 songs!!!. The Kaggle dataset has him listed as the artist for over 600 unique songs which gives me a below is sample list of those songs:
 
 #### Songs Written by Bob Dylan made famous by other artists:
-* All Along the Watchtower - Jimi Hendrix (or DMB for some)
-* Mr. Tambourine Man - The Byrds
-* It Ain't Me Babe - The Turtles
-* Wagon Wheel - Old Crow Medicine Show (or Darius Rucker)
-* Love is Just a Four Letter Word - Joan Baez
-* The Mighty Quinn (Quinn the Eskimo) - Manfred Mann
-* Farewell or Fare Thee Well - most recently featured in the Coen Brother's Film "Inside Llewen Davis"
+ * All Along the Watchtower - Jimi Hendrix (or DMB for some)
+ * Mr. Tambourine Man - The Byrds
+ * It Ain't Me Babe - The Turtles
+ * Wagon Wheel - Old Crow Medicine Show (or Darius Rucker)
+ * Love is Just a Four Letter Word - Joan Baez
+ * The Mighty Quinn (Quinn the Eskimo) - Manfred Mann
+ * Farewell or Fare Thee Well - most recently featured in the Coen Brother's Film "Inside Llewen Davis"
 
-Eventually I decided the topic **"Bob Dylan/Not Bob Dylan"** with the goal of building a classifcation model to predict if a song was written in fact written by Bob Dylan.
+Eventually I decided the topic **"Bob Dylan/Not Bob Dylan"** with the goal of building a classification model to predict if a song was written in fact written by Bob Dylan.
 
-### Process
-1. Clean the data
-* Demonstration Data
-![demo_data](images/demo_data.png)
 
-2. Tokenize all words using bag of words method:
-* Demo Data:
-![demo_bow](images/demo_bow.png)
+## Process
 
-* Actual Data:
-![bow_count](images/bow_count.png)
+### 1. Create a sample dataset:
+The first step was to create a sample dataset to work with. I wrote a function that imported the entire dataset and then created a smaller dataset of every song labeled by the specified artist, Bob Dylan in this case. Next, the function adds a random sample of songs equal to the number of songs as the test artist.
 
-3. Add weights to each word using the TF-IDF method:
-* Demo Data:
-![demo_bow](images/demo_tfidf.png)
+For demonstration purposes, I made a two song dataset to show what the data looks like after each step of the process:
 
-* Actual Data:
-![tfidf_weight](images/tfidf_weight.png)
+##### Demo Dataset:
 
-4. Test the data using the Naive Bayes method:
+| Band        |   Lyrics | Song                    |   Test_Artist |
+|:------------|:---------|:------------------------|:--------------|
+| Bob Dylan   | Go 'way from my window,\r\nLeave at your own c... | It Ain't Me Babe        | True |
+| Rick Astley | We're no strangers to love\r\n\You know the rul... | Never Gonna Give You Up | False |
+
+### 2. Clean the data:
+The next step is to clean the strings in the dataset. There are different options for cleaning the data depending on your testing purposes. For my dataset, I initially cleaned the following items out of the dataset:
+ * Remove Punctuation
+ * Remove Stopwords (my default list was sklearn's built in list of stopwords)
+
+##### Demo Dataset after cleaning:
+
+| Band        |   Lyrics | Song                    |   Test_Artist |
+|:------------|:---------|:------------------------|:--------------|
+| Bob Dylan   | go way window leave chosen speed one want babe... | It Ain't Me Babe        | True |
+| Rick Astley | strangers love know rules full commitments thi... | Never Gonna Give You Up | False |
+
+### 3. Tokenize all words using bag of words method:
+Next, you need take all of the remaining words in the dataset, also called the corpus, and convert them into a matrix. The matrix consists of one row for every song in the data set and one column for each word in the corpus.
+
+##### Demo Dataset after tokenization:
+
+||BD/NotBD|gonna|never|babe|give|want|
+|:------------|:-----------|--------:|--------:|-------:|-------:|-------:|
+|Bob Dylan|True|0|2|13|0|2|
+|Rick Astley|False|12|10|0|9|2|
+
+##### Top ten words in the demo corpus:
+
+|    | word    |   count |
+|---:|:--------|--------:|
+|  1 | babe    |      13 |
+|  2 | never   |      12 |
+|  3 | gonna   |      12 |
+|  4 | aint    |       9 |
+|  5 | give    |       9 |
+|  6 | someone |       7 |
+|  7 | say     |       6 |
+|  8 | know    |       5 |
+|  9 | lookin  |       5 |
+| 10 | ooh     |       4 |
+
+##### Top ten words in the actual test dataset:
+
+|    | word   |   count |
+|---:|:-------|--------:|
+|  1 | love   |    1470 |
+|  2 | like   |    1435 |
+|  3 | know   |    1390 |
+|  4 | got    |    1180 |
+|  5 | oh     |     986 |
+|  6 | come   |     917 |
+|  7 | time   |     852 |
+|  8 | baby   |     800 |
+|  9 | gonna  |     745 |
+| 10 | say    |     738 |
+
+### 4. Add weights to each word using the TF-IDF method:
+
+
+###### Demo dataset after TF-IDF  
+||BD/NotBD|gonna|never|babe|give|want|
+|:------------|:-----------|-----------:|-----------:|-----------:|-----------:|----------:|
+|Bob Dylan|True|0.00%|6.96%|63.54%|0.00%|6.96%|
+|Rick Astley|False|57.95%|34.36%|0.00%|43.47%|6.87%|
+
+##### Top ten words in the demo dataset:
+|    | word    |    weight |
+|---:|:--------|----------:|
+|  1 | babe    | 0.3176   |
+|  2 | gonna   | 0.2897  |
+|  3 | aint    | 0.2199   |
+|  4 | give    | 0.2173  |
+|  5 | never   | 0.2065  |
+|  6 | someone | 0.1710  |
+|  7 | lookin  | 0.1221  |
+|  8 | know    | 0.1207  |
+|  9 | say     | 0.1037  |
+| 10 | go      | 0.0977 |
+
+###### Top ten weights in the actual test dataset:
+
+|    | word   |    weight |
+|---:|:-------|----------:|
+|  1 | love   | 0.037% |
+|  2 | know   | 0.029% |
+|  3 | like   | 0.027% |
+|  4 | got    | 0.024% |
+|  5 | baby   | 0.024% |
+|  6 | oh     | 0.023% |
+|  7 | come   | 0.022% |
+|  8 | time   | 0.022% |
+|  9 | let    | 0.019% |
+| 10 | say    | 0.019% |
+
+### 5. Test the data using the Naive Bayes method:
 
 **Given the song is Bob Dylan, what is the probability that we see that specific word?**
 
+My initial results had the following results:
 
-## Results
+### Classification Statistics:
 
-| Stat | Score |
-| ----------- | ----------- |
-| Accuracy | 69.2% |
-| Precision | 61.0% |
-| Recall | 92.3% |
-| F1-Score | 73.6% |
+| Statistic   |   Result |
+|:------------|---------:|
+| Accuracy    |   0.7628 |
+| Precision   |   0.7336 |
+| Recall      |   0.8615 |
+| F1-Score    |   0.7925 |
+
+
+### Sparse Matrix:
+| | |
+|:------------|---------:|
+| Shape of Sparse Matrix: | (1234, 14962) |
+| Amount of Non-Zero occurences: | 79338 |
+| Sparcity of Matrix: | 0.430 |
+
 
 ### Confusion Matrix
-| 92 | 107 |
-| ----------- | ----------- |
-| 14 | 168 |
 
-<!-- ## Getting Started
+![confusion_matrix][1]
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+### ROC Plot:
+![roc_plot][2]
 
 
-Project Organization
-------------
-
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
 
 
---------
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p> -->
+
+
+
+
+
+
+
+
+[1]: images/confusion_matrix_orig.png
+[2]: images/roc_plot_orig.png
