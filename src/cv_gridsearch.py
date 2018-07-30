@@ -15,7 +15,7 @@ import itertools
 from tabulate import tabulate
 
 from add_stop_words import add_stop_words, nltk_s_words
-from final_main import get_data, set_pipeline, make_predictions, data_test_train_split, combine_stopwords
+from main import get_data, set_pipeline, make_predictions, data_test_train_split, combine_stopwords
 
 plt.style.use('seaborn-darkgrid')
 plt.rcParams["patch.force_edgecolor"] = True
@@ -77,11 +77,6 @@ def clean_strip_lyrics(dataset, stopwords=sksw, lemm=None, stem=None):
 
 
 full_dataset = get_data()
-clean_dataset, clean_lyrics = clean_full_dataset(
-    full_dataset, stopwords=sksw, lemm=None, stem=None)
-X_train, X_test, y_train, y_test = data_test_train_split(clean_dataset)
-X = clean_dataset['Lyrics']
-y = clean_dataset['Test_Artist']
 
 
 # CV
@@ -267,9 +262,9 @@ def lyrics_gridsearch(full_dataset, feature_list=combs_list):
         print("\nComparing model with gridsearch params to initial model on Test set.")
         print(
             f"Stopwords: {item.split(', ')[0]}, Lemm: {item.split(', ')[1]}, Stem: {item.split(', ')[2]}\n")
-        lyrics_pipeline = set_pipeline(X_train, y_train)
+        lyrics_pipeline = set_pipeline(X, y)
         display_default_and_gsearch_model_results(
-            lyrics_pipeline, nb_best_model, X_test, y_test)
+            lyrics_pipeline, nb_best_model, X, y)
         print('-------------------------------------------------------\n')
 
 
