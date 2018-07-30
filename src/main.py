@@ -304,8 +304,10 @@ def roc_curve_plot(y_test, y_probs, save_fig=False):
     This function prints and plots the ROC plot.
     '''
     fpr, tpr, thresholds = metrics.roc_curve(y_test, y_probs)
+    roc_auc = metrics.auc(fpr, tpr)
     plt.figure(figsize=(12, 6))
-    plt.plot(fpr, tpr, label='ROC curve', linewidth=2)
+    plt.plot(fpr, tpr, label=f'ROC Curve (AUC = {roc_auc:.2f})', linewidth=2)
+    plt.plot([0,1], [0,1], linestyle='--', lw=2, color='r')
     plt.xlabel("False Positive Rate (1 - Specificity)", fontsize=14)
     plt.ylabel("True Positive Rate (Sensitivity, Recall)", fontsize=14)
     plt.title("ROC plot", fontsize=20)
