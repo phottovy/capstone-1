@@ -96,6 +96,7 @@ Next, you need take all of the remaining words in the corpus and convert them in
 | Sparcity of Matrix: | 0.430 |
 
 
+
 Out of curiosity, I decided to see which word were more common in Bob Dylan songs than in the rest of the songs in the sample dataset. (minimum of 200 in bd_count)
 
 #### Top twenty words more common in Bob Dylan songs:
@@ -124,7 +125,6 @@ Out of curiosity, I decided to see which word were more common in Bob Dylan song
 | heart  |        255 |           251 |           506 | 50.40% |
 
 
-
 ### 4. Add weights to each word using the TF-IDF method:
 While having a matrix with count of each word is helpful, it does not provide any meaningful distinction between the different documents. The goal of classification is to build a model that can identify unique qualities of one writer's song lyrics from other songs. Now we will tranform the word counts to a Term Frequency-Inverse Document Frequency (TF-IDF) matrix. The method identifies the importance of a single word within its document by taking the count of that word and dividing it by the total number of words in the document. This gives you the TF of the IDF. To calculate the IDF, you reduce the TF by comparing it to how often that same word appears in the rest of the corpus. For example, if a word appears in one document but does not appear in any other document, than it will have a high weight. Conversely, if a word appears often in many documents in the corpus, that word loses some of its weight in differentiating one document from another. Remember, the goal is to find characteristics of one song writer and if a word is common to many song writers, it does not help our model make its predictions.
 
@@ -135,25 +135,25 @@ While having a matrix with count of each word is helpful, it does not provide an
 |Rick Astley|False|57.95%|34.36%|0.00%|43.47%|6.87%|
 
 #### Top ten words in the demo dataset:
-|    | word    |    weight |
-|---:|:--------|----------:|
-|  1 | babe    | 0.3176   |
+|    | word    |  weight |
+|---:|:--------|--------:|
+|  1 | babe    | 0.3176  |
 |  2 | gonna   | 0.2897  |
-|  3 | aint    | 0.2199   |
+|  3 | aint    | 0.2199  |
 |  4 | give    | 0.2173  |
 |  5 | never   | 0.2065  |
 |  6 | someone | 0.1710  |
 |  7 | lookin  | 0.1221  |
 |  8 | know    | 0.1207  |
 |  9 | say     | 0.1037  |
-| 10 | go      | 0.0977 |
+| 10 | go      | 0.0977  |
 
 As you can see in the demo dataset, several words are very important in distinguishing the two songs from each other.
 
 #### Top ten weights in the actual test dataset:
 
-|    | word   |    weight |
-|---:|:-------|----------:|
+|    | word   | weight |
+|---:|:-------|-------:|
 |  1 | love   | 0.037% |
 |  2 | know   | 0.029% |
 |  3 | like   | 0.027% |
@@ -174,11 +174,11 @@ The final step is to train a model to make predictions on whether a song from th
 The model then takes the total probability of that song and makes its prediction.
 
 
-## Initial Results
+## Initial Results:
 
 After training and testing my first model, I saw the following results:
 
-### Classification Statistics:
+Classification Statistics:
 
 | Statistic   |   Result |
 |:------------|---------:|
@@ -187,12 +187,12 @@ After training and testing my first model, I saw the following results:
 | Recall      |   0.8615 |
 | F1-Score    |   0.7925 |
 
-### Confusion Matrix
-
+### Confusion Matrix:
 ![confusion_matrix][1]
 
 ### ROC Plot:
 ![roc_plot][2]
+
 
 For using a fairly basic approach the model did a decent job at predicting Bob Dylan songs from non Bob Dylan songs. The model had 61 false positives and 27 false negatives which is not too bad using only song lyrics and only a small amount of cleaning to the lyrics. **But can the model do better?**
 
@@ -233,7 +233,7 @@ Using this approach, all four versions of study are now grouped together.
 
 Now that we understand the concepts, lets see if we can improve our model's predictions.
 
-## Gridsearch Cross-Validation
+## Gridsearch Cross-Validation:
 To try and build the best possible model, I ran multiple combinations of stopwords, stemming methods, and lemmitization algorithms to see which model was the best. Here are the combinations I used in my gridsearch:
 
  * max features (max # of words to keep): [No max, 50, 100, 500, 1000, 5000, 10000, 12000]
@@ -284,8 +284,43 @@ As you can see, there wasn't a specific combination that had the overall worst r
 My big takeaway from these results is the **power of cross-validation**. Even though these scores are quite a bit lower than the top performing combination, these low scores still outperformed the initial that did not use cross-validation!
 
 
-<!-- ## Final Comparison
-To truly test these results, I decided to run the original, top performer and lowest performer against a new sample dataset. This final dataset still contains all of the Bob Dylan Songs but a new random sample of songs for the rest of the data set.  -->
+## Final Results:
+To truly test these results, I decided to run the original, top performer and lowest performer against a new sample dataset, with and without cross-validation. This final dataset still contains all of the Bob Dylan Songs but a new random sample of songs for the rest of the data set. Here are my results with the new sample dataset:
+
+#### Without Cross-Validation
+Classification Statistics:
+
+|Default Params| Result || Top Params  | Result   ||Bottom Params| Result   |
+|:-------------|-------:||:------------|---------:||:------------|---------:|
+| Accuracy     | 0.6631 || Accuracy    |   0.6685 || Accuracy    |   0.7143 |
+| Precision    | 0.5966 || Precision   |   0.6007 || Precision   |   0.6667 |
+| Recall       | 0.9558 || Recall      |   0.9558 || Recall      |   0.8287 |
+| F1-Score     | 0.7346 || F1-Score    |   0.7377 || F1-Score    |   0.7389 |
+
+#### With Cross-Validation
+Classification Statistics:
+
+|Default Params|   Result || Top Params  |   Result ||Bottom Params|   Result |
+|:-------------|---------:||:------------|---------:||:------------|---------:|
+| Accuracy     |   0.8814 || Accuracy    |   0.8949 || Accuracy    |   0.7898 |
+| Precision    |   0.8128 || Precision   |   0.8318 || Precision   |   0.7269 |
+| Recall       |   0.9834 || Recall      |   0.9834 || Recall      |   0.9116 |
+| F1-Score     |   0.8900 || F1-Score    |   0.9013 || F1-Score    |   0.8088 |
+
+### Confusion Matrix:
+#### Without Cross-Validation
+![confusion_matrix][4]
+
+#### With Cross-Validation
+![cv_confusion_matrix][5]
+
+### ROC Plot:
+![cv_roc_plot][6]
+
+
+## Conclusion:
+As expected the models using cross-validation performed the best. Even with some of the more basic NLP techniques, it is possible to build a predictive model that does the job of distinguishing between **Bob Dylan/Not Bob Dylan**!
+
 
 ## Possible Future Steps:
  * Compare Naive Bayes to other more advanced modeling techniques
@@ -296,3 +331,6 @@ To truly test these results, I decided to run the original, top performer and lo
 [1]: images/confusion_matrix_orig.png
 [2]: images/roc_plot_orig.png
 [3]: data/gridsearch_results.md
+[4]: images/confusion_matrix.png
+[5]: images/cv_confusion_matrix.png
+[6]: images/cv_roc_plot.png
