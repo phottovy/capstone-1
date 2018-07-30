@@ -241,19 +241,51 @@ To try and build the best possible model, I ran multiple combinations of stopwor
  * lemmitization: [None, nltk wordnet]
  * stemming: [None, nltk porter, nltk snowball]
 
-This gave me a total of 240 combinations to optimize my model.
+I also used a KFold cross-validation with 4 folds to test each combination.
+
+This gave me a total of 240 combinations plus cross-validation to optimize my model.
+
+I also used a KFold cross validation with 4 folds to
+
 You can see the results of each combination in my [gridsearch_results][3] file.
 
-#### Best performers:
+#### Best/worst performers:
 
-| Statistic   |   Result |
-|:------------|---------:|
-| Accuracy    |   0.7628 |
-| Accuracy    |   0.7628 |
-| Precision   |   0.7336 |
-| Recall      |   0.8615 |
-| F1-Score    |   0.7925 |
+The best overall performer was actual our default parameters except limiting the number of words provided the best results:
+ * max features: 12000 words
+ * stopwords: sklearn
+ * lemmitization: None
+ * stemming: None
 
+| Statistic    |GridsearchCV Scores|
+|:-------------|----------:|
+| Max Features |     12000 |
+| Accuracy     |     0.910 |
+| Precision    |     0.860 |
+| Recall       |     0.979 |   
+| F1-Score     |     0.916 |   
+
+Several of the other combinations had scores close to these scores but these were the highest results in for each metric.
+
+There wasn't one specific combination that was the worst across the board but I do see some trends in the results:
+
+| Statistic    | GridsearchCV Scores |Stopwords|Lemm|Stem|
+|:-------------|----------:|:---------|:---------|:---------|
+| Max Features |      500* | | | |
+| Accuracy     |     0.801 |addt'l common words|None|snowball|
+| Precision    |     0.753 |addt'l common words|None|snowball|
+| Recall       |     0.885 |sklearn|wordnet|snowball|
+| F1-Score     |     0.819 |None|None|snowball|
+
+\* 500 features had the worst score in each category
+
+As you can see, there wasn't a specific combination that had the overall worst results and several other combinations were close to these results. The snowball method of stemming was the only constant in the worst performing combinations.
+
+My big takeaway from these results is the **power of cross-validation**. Even though these scores are quite a bit lower than the top performing combination, these low scores still outperformed the initial that did not use cross-validation!
+
+
+<!-- ## Final Comparison
+To truly test these results, I decided to run the original, top performer and lowest performer against a new sample dataset. This final dataset still contains all of the Bob Dylan Songs but a new random sample of songs for the rest of the data set.  -->
 
 ## Possible Future Steps:
  * Compare Naive Bayes to other more advanced modeling techniques
