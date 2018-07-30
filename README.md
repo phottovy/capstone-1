@@ -290,22 +290,22 @@ To truly test these results, I decided to run the original, top performer and lo
 #### Without Cross-Validation
 Classification Statistics:
 
-|Default Params| Result || Top Params  | Result   ||Bottom Params| Result   |
-|:-------------|-------:||:------------|---------:||:------------|---------:|
-| Accuracy     | 0.6631 || Accuracy    |   0.6685 || Accuracy    |   0.7143 |
-| Precision    | 0.5966 || Precision   |   0.6007 || Precision   |   0.6667 |
-| Recall       | 0.9558 || Recall      |   0.9558 || Recall      |   0.8287 |
-| F1-Score     | 0.7346 || F1-Score    |   0.7377 || F1-Score    |   0.7389 |
+|Default Params| Result | | Top Params  | Result | |Bottom Params| Result   |
+|:-------------|-------:|-|:------------|-------:|-|:------------|---------:|
+| Accuracy     | 0.6631 | | Accuracy    | 0.6685 | | Accuracy    |   0.7143 |
+| Precision    | 0.5966 | | Precision   | 0.6007 | | Precision   |   0.6667 |
+| Recall       | 0.9558 | | Recall      | 0.9558 | | Recall      |   0.8287 |
+| F1-Score     | 0.7346 | | F1-Score    | 0.7377 | | F1-Score    |   0.7389 |
 
 #### With Cross-Validation
 Classification Statistics:
 
-|Default Params|   Result || Top Params  |   Result ||Bottom Params|   Result |
-|:-------------|---------:||:------------|---------:||:------------|---------:|
-| Accuracy     |   0.8814 || Accuracy    |   0.8949 || Accuracy    |   0.7898 |
-| Precision    |   0.8128 || Precision   |   0.8318 || Precision   |   0.7269 |
-| Recall       |   0.9834 || Recall      |   0.9834 || Recall      |   0.9116 |
-| F1-Score     |   0.8900 || F1-Score    |   0.9013 || F1-Score    |   0.8088 |
+|Default Params|   Result | | Top Params  |  Result | |Bottom Params|   Result |
+|:-------------|---------:|-|:------------|--------:|-|:------------|---------:|
+| Accuracy     |   0.8814 | | Accuracy    |  0.8949 | | Accuracy    |   0.7898 |
+| Precision    |   0.8128 | | Precision   |  0.8318 | | Precision   |   0.7269 |
+| Recall       |   0.9834 | | Recall      |  0.9834 | | Recall      |   0.9116 |
+| F1-Score     |   0.8900 | | F1-Score    |  0.9013 | | F1-Score    |   0.8088 |
 
 ### Confusion Matrix:
 #### Without Cross-Validation
