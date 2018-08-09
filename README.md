@@ -1,5 +1,7 @@
 # Binary Classification Using Bob Dylan Lyrics
 
+![word_cloud][7]
+
 ## Background
 
 After discovering the [Every song you have heard (almost)!](https://www.kaggle.com/artimous/every-song-you-have-heard-almost) song lyric dataset on Kaggle.com which includes over 500,000 song lyrics, I had a grandiose idea of determining which is a better predictor of song popularity: song lyrics or music composition. After being persuaded **(and rightfully so)** this project was a little ambitious for a first capstone, I was still curious if I could discover any meaning full data using song lyrics.
@@ -334,3 +336,4 @@ As expected the models using cross-validation performed the best. Even with some
 [4]: images/confusion_matrix.png
 [5]: images/cv_confusion_matrix.png
 [6]: images/cv_roc_plot.png
+[7]: images/bd_wordcloud.png
