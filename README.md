@@ -2,6 +2,13 @@
 
 ![word_cloud][7]
 
+Galvanize Data Science Immersive | Capstone #1 | June 2018
+
+### Pat Hottovy
+#### Data Scientist
+Email: phottovy@gmail.com  
+Linkedin: [in/patrick-hottovy](https://www.linkedin.com/in/patrick-hottovy/)
+
 ## Background
 
 After discovering the [Every song you have heard (almost)!](https://www.kaggle.com/artimous/every-song-you-have-heard-almost) song lyric dataset on Kaggle.com which includes over 500,000 song lyrics, I had a grandiose idea of determining which is a better predictor of song popularity: song lyrics or music composition. After being persuaded **(and rightfully so)** this project was a little ambitious for a first capstone, I was still curious if I could discover any meaning full data using song lyrics.
